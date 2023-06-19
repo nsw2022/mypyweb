@@ -20,7 +20,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # See https://docs.djangoproject.com/en/4.2/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'django-insecure-@8ruv_z4wrh5u(ut!39@m*sefiobxouu9#e^)cc_c)6&g!597@'
+SECRET_KEY = 'django-insecure-o70+3c&_j_$+#36_p01a@aolqur4r7k#akge^m@o9t*^m2++va'
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
@@ -29,7 +29,7 @@ ALLOWED_HOSTS = []
 
 
 # Application definition
-# db사용을 허락하는 공간(앱명을 써서해줌)
+
 INSTALLED_APPS = [
     'django.contrib.admin',
     'django.contrib.auth',
@@ -55,7 +55,7 @@ ROOT_URLCONF = 'config.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [],
+        'DIRS': [BASE_DIR / 'templates'],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -106,7 +106,7 @@ AUTH_PASSWORD_VALIDATORS = [
 
 LANGUAGE_CODE = 'ko-kr'
 
-TIME_ZONE = 'Asia'
+TIME_ZONE = 'Asia/Seoul'
 
 USE_I18N = True
 
