@@ -1,0 +1,99 @@
+------------------------------- 1차 프로젝트 ------------------------------------------
+
+웹 프로젝트 - 프레임 워크 (DB장고)
+
+가상화란?
+
+가상화(virtualization) 폴더 - myvenv1, myvenv2
+django 3
+django 4
+
+가상화 폴더 myvenv > 가상화 모듈
+작업폴더 myvenvweb > 
+
+myvenv > Scripts 에서 activate 하기   <- 가상화로 들어가는 설정
+
+한후에 > python m- pip install django
+
+cd: c:/mypyweb/polls
+django-admin startproject config .
+python manage.py runserver <- 서버 진행 
+
+파이참에서 c:/mypyweb/polls 폴더로 열어서
+add 인터프리터가서 existing
+설정들가서 프로젝트 polls 설정안에 인터프리터를 c드라이브 myvenv(가상화한 파이썬)로 설정해줌
+
+
+app>python manage.py startapp poll 
+
+---------------------------------------------------------------------------------------------------------
+16일 점심시간 까지 각자 장고로 만든 사이트나, 주제를 좀 생각해봐요
+※ 추상적인 개념(쇼핑, 영화, ...)이여도 되여, 출처도 같이 적으면 좋을꺼같아요
+
+https://blog.naver.com/n_cloudplatform/221934597899
+
+db가 sqlit3라 바꾸려함
+
+python manage.py migrate <- 데이터 를 만드는행위(migrate = 이사)
+(최초설정시 데이터가 없는경우가 있음)
+
+urls.py 안의 작업
+path('poll/', views.index),
+.....
+
+config > urls.py
+poll > urls.py
+
+{{}} - 출력
+{% %} - 명령문
+
+RDBMS(관계형 데이터 베이스)
+
+DB 체계 ORM(Object Relation Mapping) <- 중간체계 : 객체 관계형 데이터베이스
+엔티티(ENTITY) 테이블 => 클래스로 만듬
+SQL을 사용했을때 단점 뭐 일관성이나 유지보수 힘들다
+
+마이그레이션은 위에 설명처럼 이주할때 사용하는것 같다
+아래의 경우에서는 클래스를 테이블로 만드는 행위가 이주한다라 여겨서 쓴듯함
+클래스(테이블)를 실행하는 명령어
+1. python manage.py makemigrations <- 
+models.py 에 쓰는 내용을 DB와 연동시킬 파이썬 파일로 만들어주는 명령어
+
+2. python manage.py migrate
+models.py에 입력한 내용말고도 기본적으로 제공하는 admin이나 auth들도 마이그레이션 해줌
+
+쉘에 입력하기전 poll/models.py 안에 클래스를 만들고 안에 함수로 정의를 해줘야함
+
+쉘 : 입출력 하는 거 ( 리눅스에서 쓴다하는데 다음에 알아보자 세상바쁘다 )
+파워쉘 <- java로 치면 pstmt 같은 느낌 
+python manage.py sehll
+
+from poll.models import Question
+from django.utils import timezone
+
+Question.objects.all() <- 객체 저장되어있는 값 다출력
+변수에 따로 할당 
+q = Question(question_text = '당신의 취미는 무엇인가요?', pub_date = timezone.now)
+q.save()
+
+q = Question.objects.get(id=1)
+c = Choice(choice_test = '영화감상', votes = 0 question=q)
+
+
+쉘탈출 -> 컨트롤 + Z 두번
+
+ORDBMS(객체형 데이터 베이스)
+
+자바계열
+MVC - Model(db) View(jsp - 화면) Controller(servlet)
+
+파이썬
+MTV - Model Templates(View(Controller - 제어))
+
+
+-------------------------------------------------------------------------
+프로젝트 생성
+django-admin startproject config .
+
+앱생성
+python manage.py startapp board
