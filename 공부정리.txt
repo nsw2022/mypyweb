@@ -97,3 +97,6 @@ django-admin startproject config .
 
 앱생성
 python manage.py startapp board
+-------------------------------------------------------------------------
+FBV(Function Based View) - 함수형
+CBV(class Based View) - 클래스형

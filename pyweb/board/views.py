@@ -9,7 +9,8 @@ def index(request):
     return render(request, 'board/index.html')
 
 def question_list(request):
-    question_list = Question.objects.all()
+    #question_list = Question.objects.all()
+    question_list = Question.objects.order_by('-create_date')# 내림 차순
     context = {'question_list':question_list}
     return render(request, 'board/question_list.html', context)
 
