@@ -100,3 +100,5 @@ python manage.py startapp board
 -------------------------------------------------------------------------
 FBV(Function Based View) - 함수형
 CBV(class Based View) - 클래스형
+
+classmodels.User 

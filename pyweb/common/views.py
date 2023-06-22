@@ -11,8 +11,8 @@ def signup(request):
         if form.is_valid():
             form.save()  # 회원가입을 DB에 저장
 
-            username = form.cleaned_data('username')
-            password = form.cleaned_data('password1')
+            username = form.cleaned_data.get('username') # 방법이 2가지임
+            password = form.cleaned_data['password1']
             user = authenticate(username=username, password=password)
             login(request, user)
 

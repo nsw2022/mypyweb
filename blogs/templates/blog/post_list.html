@@ -1,0 +1,21 @@
+{% extends 'base.html' %}
+{% block content %}
+<div class="container">
+
+  {% if post_list %}
+    <!-- 포스트 가져오기 -->
+    {% for post in post_list %}
+    <h3 class="my-3">
+      <a href="{% url 'blog:detail' post.id %}">{{post.title}}</a>
+    </h3>
+    <h5 style="white-space: pre-line; line-height: 1.5;">{{post.content}}</h5>
+    <p>작성일 {{post.pub_date}}</p>
+    {% if post.photo %}
+    <img src="{{ post.photo.url }}" alt="블로그사진" srcset="">
+    {% endif %}
+    {% endfor %}
+  {% else %}
+    <p>포스트가 없구나..</p>
+  {% endif %}
+</div>
+{% endblock %}
