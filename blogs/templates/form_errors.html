@@ -1,0 +1,22 @@
+{% block content %}
+<!--유효성 검사 오류 처리 시작 -->
+{% if form.errors %}
+
+    {% for field in form %}     <!-- 폼의 필드를 준비 -->
+        {% if field.errors %}   <!-- 에러값 -->
+<div class="alert alert-danger">
+            {{ field.label }}
+            {{ field.errors }}
+</div>
+        {% endif %}
+    {% endfor %}
+    <!-- 넌 필드 오류   -->
+    {% for error in form.non_filed_errors %}
+        <div class="alert alert-danger">
+            <strong>{{error}}</strong><!--데이터 베이스에서 난 오류 -->
+        </div>
+    {% endfor %}
+
+{% endif %}
+<!-- 오류 처리 끝 -->
+{% endblock %}

@@ -1,21 +1,53 @@
 {% extends 'base.html' %}
+{% load static %}
 {% block content %}
-<div class="container">
-
-  {% if post_list %}
-    <!-- 포스트 가져오기 -->
-    {% for post in post_list %}
-    <h3 class="my-3">
-      <a href="{% url 'blog:detail' post.id %}">{{post.title}}</a>
-    </h3>
-    <h5 style="white-space: pre-line; line-height: 1.5;">{{post.content}}</h5>
-    <p>작성일 {{post.pub_date}}</p>
-    {% if post.photo %}
-    <img src="{{ post.photo.url }}" alt="블로그사진" srcset="">
-    {% endif %}
-    {% endfor %}
-  {% else %}
-    <p>포스트가 없구나..</p>
-  {% endif %}
+<div class="container my-3">
+  <section id="post_list">
+      <h2>블로그 홈</h2>
+      {% if post_list %}
+      <!-- 포스트 가져옴 -->
+        {% for post in post_list %}
+            <hr>
+            <!-- 카테고리 가 있으면 -->
+            {% if post.category %}
+                <h6 class="text-end">[{{ post.category }}]</h6>
+            {% endif %}
+            <h5>
+                <a href="{% url 'blog:detail' post.id %}">{{ post.title }}</a>
+            </h5>
+            <p>작성자: {{ post.author }} (작성일: {{ post.pub_date }})</p>
+            <p style="white-space: pre-line; line-height: 1.5em">
+                {{ post.content }}
+            </p>
+            {% if post.photo %}
+                <img src="{{ post.photo.url }}">
+            {% endif %}
+        {% endfor %}
+      {% else %}
+        <p>포스트가 없습니다.</p>
+      {% endif %}
+  </section>
+  <aside>
+    <h4>분류(Categories)</h4>
+    <div>
+        <ul>
+            {% for category in categries %}
+                {% if current_category.slug == category.slug %}
+                <li style="background: #ff0;">
+                    <a href="{{ category.get_absoulte_url }}">
+                        {{ category.name }}({{ category.post_set.count }})
+                    </a>
+                </li>
+                {% else %}
+                <li>
+                    <a href="{{ category.get_absoulte_url }}">
+                        {{ category.name }}({{ category.post_set.count }})
+                    </a>
+                </li>
+                {% endif %}
+            {% endfor %}
+        </ul>
+    </div>
+  </aside>
 </div>
 {% endblock %}
