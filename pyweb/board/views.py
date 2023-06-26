@@ -1,4 +1,5 @@
 from django.contrib.auth.decorators import login_required
+from django.core.paginator import Paginator
 from django.http import HttpResponse
 from django.shortcuts import render, redirect, get_object_or_404
 from django.utils import timezone
@@ -10,13 +11,17 @@ from board.models import Question, Answer
 def index(request):
     return render(request, 'board/index.html')
 
-
+# 질문 목록
 def question_list(request):
-    # question_list = Question.objects.all()
     question_list = Question.objects.order_by('-create_date')  # 내림 차순
-    context = {'question_list': question_list}
-    return render(request, 'board/question_list.html', context)
 
+    # 페이지 처리
+    page = request.GET.get('page', '1')
+    paginator = Paginator(question_list, 10)  # 페이지당 게시글 - 10
+    test = paginator.get_page(page)
+
+    context = {'question_list': test}
+    return render(request, 'board/question_list.html', context)
 
 def detail(request, question_id):
     # question = Question.objects.get(id=question_id)

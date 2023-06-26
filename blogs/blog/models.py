@@ -1,3 +1,5 @@
+import os
+
 from django.contrib.auth.models import User
 from django.db import models
 from django.urls import reverse
@@ -33,9 +35,20 @@ class Post(models.Model):
     modify_date = models.DateTimeField(null=True, blank=True) # 수정일
     photo = models.ImageField(upload_to='blog/images/%Y/%m/%d/',
                               null=True, blank=True) # null 허용 파일을 첨부하지 않을수 있음
+    file = models.FileField(upload_to='blog/files/%Y/%m/%d/',
+                            null=True, blank=True)
     # on_delete=models.SET_NULL -> 카테고리가(부모테이블의 요소가) 삭제될때 포스트는(자식요소는) 같이 삭제 되지 않는다
     category = models.ForeignKey(Category, null=True, blank=True, on_delete=models.SET_NULL)
 
     # 이걸안하면 관리자 페이지에서 잘안나옴
     def __str__(self):
         return self.title
+
+    # 파일의 이름을 출력하는 메서드
+    def get_file_name(self):
+        return os.path.basename(self.file.name)
+
+    # 파일의 확장자 구분
+    def get_file_ext(self):
+        # seoul.csv-> csv
+        return self.get_file_name().split('.')[-1]

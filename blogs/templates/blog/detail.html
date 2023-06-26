@@ -12,6 +12,18 @@
     {% if post.photo %}
       <img src="{{ post.photo.url }}" alt="블로그사진" srcset="">
     {% endif %}
+    {% if post.file %}
+     <a href="{{ post.file.url }}" download class="btn btn-outline-dark">
+       Download :
+       {% if post.get_file_ext == 'csv' %}
+          <i class="fa-solid fa-file-csv"></i>
+       {% elif post.get_file_ext == 'xlsx' or post.get_file_ext == 'xls' %}
+          <i class="fa-solid fa-file-excel"></i>
+       {% else %}
+       <i class="fa-solid fa-file"></i>
+       {% endif %}
+    {{ post.get_file_name }}</a>
+    {% endif %}
   </section>
 
   <aside>
