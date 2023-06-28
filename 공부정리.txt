@@ -102,3 +102,10 @@ FBV(Function Based View) - 함수형
 CBV(class Based View) - 클래스형
 
 classmodels.User 
+-------------------------------------------------------------------------
+폼
+1. 모델폼(ModelForm) -> UserForm class MEta:
+model = Post
+
+2. 일반폼(Form)
+
