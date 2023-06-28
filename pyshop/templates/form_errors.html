@@ -1,0 +1,15 @@
+{% block content %}
+
+{% if form.errors %}
+<div class="alert alert-danger">
+    {% for field in form %}     <!-- 폼의 필드를 준비 -->
+        {% if field.errors %}   <!-- 에러값 -->
+            {{ field.label }}
+            {{ field.errors }}
+
+        {% endif %}
+    {% endfor %}
+</div>
+{% endif %}
+<!-- 오류 처리 끝 -->
+{% endblock %}

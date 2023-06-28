@@ -2,8 +2,8 @@ from django.http import HttpResponse
 from django.shortcuts import render, redirect
 from django.utils import timezone
 
-from blog.models import Post, Category
-from blog.forms import PostForm
+from .models import Post, Category
+from .forms import PostForm
 
 
 # Create your views here.
