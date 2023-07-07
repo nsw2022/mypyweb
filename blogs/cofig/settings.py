@@ -31,6 +31,16 @@ ALLOWED_HOSTS = []
 # Application definition
 
 INSTALLED_APPS = [
+    'django.contrib.sites',  # 로그인 사이트 관련정보를 가져옴(url 관리)
+    'allauth',  # 설치한거중 메인기능을 담당한다고함
+    'allauth.account',  # 소셜 로그인 회원관리
+    'allauth.socialaccount',  # 소셜로그인 정보 관리
+    'allauth.socialaccount.providers.google',  # 구글
+    'allauth.socialaccount.providers.kakao',
+    'allauth.socialaccount.providers.naver',
+
+
+
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -82,6 +92,13 @@ DATABASES = {
     }
 }
 
+SITE_ID = 1
+
+AUTHENTICATION_BACKENDS = (
+    # 로그인 과정 처리 담당
+    'django.contrib.auth.backends.ModelBackend',  # 장고에서 제공하는 기본 유저 백엔드
+    'allauth.account.auth_backends.AuthenticationBackend',  # 소셜로그인 allauth가 제공하는 정보가 있음
+)
 
 # Password validation
 # https://docs.djangoproject.com/en/4.2/ref/settings/#auth-password-validators

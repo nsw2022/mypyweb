@@ -1,43 +1,38 @@
-
 <!DOCTYPE html>
-{% load static %}
 <html lang="ko">
-
+{% load static %}
 <head>
     <meta charset="UTF-8">
-    <title>설문 항목</title>
-    <link rel="stylesheet" href="{% static 'poll/css/style.css' %}">
-
-
+    <title>상세 페이지</title>
+    <link rel="stylesheet" href="{% static '/poll/css/style.css' %}">
 </head>
 <body>
     <div id="container">
-        <h1>설문 항목</h1>
-        <hr>
-        <form action="{% url 'poll:vote' question.id %}" method="post" id="main">
-            {% csrf_token %} <!-- 해킹방지 -->
-            <fieldset>
-                {% if error %}
-                   <p class="error"> {{ error }} </p>
-                {% endif %}
-                <legend>{{question.question_text}}</legend>
-                {% for choice in question.choice_set.all %}
-                <p>
-                    <input type="radio" name="choice" value="{{choice.id}}">
-                    <label>{{ choice.choice_text }}</label>
-                </p>
-                {% endfor %}
-                <img src="{% static 'poll/images/ballot.png' %}" alt="사진받아라">
-            </fieldset>
-            <p><input type="submit" value="투표"></p>
-        </form>
+        <section id="detail">
+            <h1>투표 하기</h1>
+            <form action="{% url 'poll:vote' question.id %}" method="post">
+               {% csrf_token %}
+               <fieldset>
+                   <legend>{{ question.question_text }}</legend>
+                    {% if error %}
+                        <span class="error">{{ error }}</span>
+                    {% endif %}
+                    {% for choice in question.choice_set.all %}
+                        <p>
+                            <input type="radio" name="choice" value="{{ choice.id }}">
+                            <label>{{ choice.choice_text }}</label>
+                        </p>
+                    {% endfor %}
+               </fieldset>
+                <p><button type="submit">투표</button></p>
+            </form>
+        </section>
     </div>
-
-<!--    <ul>-->
-<!--    {% for choice in question.choice_set.all %}-->
-<!--        <li>{{choice.choice_text}}</li>-->
-<!--    {% endfor %}-->
-<!--    </ul>-->
-
+  <!-- <h2>{{ question.question_text }}</h2>
+       <ul>
+      {% for choice in question.choice_set.all %}
+        <li>{{ choice.choice_text }}</li>
+      {% endfor %}
+  </ul>-->
 </body>
 </html>

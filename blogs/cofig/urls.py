@@ -12,6 +12,7 @@ urlpatterns = [
     path('', views.index),
     path('blog/', include('blog.urls')),
     path('common/', include('common.urls')),
+    path('accounts/', include('allauth.urls')),
 ]
 
 urlpatterns += static(settings.MEDIA_URL,

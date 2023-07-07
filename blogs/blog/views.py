@@ -1,61 +1,94 @@
-from django.http import HttpResponse
-from django.shortcuts import render, redirect
-from django.utils import timezone
-
+from django.contrib.auth.decorators import login_required
+from django.core import paginator
+from django.core.paginator import Paginator
+from django.db.models import Q
+from django.shortcuts import render, get_object_or_404, redirect
 from .models import Post, Category
 from .forms import PostForm
+from django.utils import timezone
 
 
-# Create your views here.
 def index(request):
-    return render(request, 'blog/index.html')
+    # 최신글 3개 보여주기
+    recent_post = Post.objects.order_by('-pub_date')[0:3]
+    context = {'recent_post': recent_post}
+    return render(request, 'blog/index.html', context)
 
 
 # 포스트 목록
 def post_list(request):
-    post_list = Post.objects.order_by("-pub_date")
-    categries = Category.objects.all()  # 카테고리 전체 검색
-    context = {'post_list': post_list, 'categries': categries}
+    post_list = Post.objects.order_by('-pub_date')
+
+    # 검색처리
+    kw = request.GET.get('kw', '')
+
+    if kw:
+        post_list = post_list.filter(
+            Q(title__icontains=kw) |  # 제목으로 검색
+            Q(content__icontains=kw) |  # 내용 검색
+            Q(author__username__icontains=kw)  # 글쓴이
+
+        ).distinct()
+
+    # 페이지
+    page = request.GET.get('page', 1)
+    paginator = Paginator(post_list, 5)
+    page_obj = paginator.get_page(page)
+
+    categories = Category.objects.all()
+    context = {
+        'post_list': page_obj,
+        'categories': categories,
+        'post_list2': len(post_list),
+        'kw': kw
+    }
     return render(request, 'blog/post_list.html', context)
 
 
-# 상세페이지
+# 포스트 상세 페이지
 def detail(request, post_id):
-    post = Post.objects.get(id=post_id)
-    categries = Category.objects.all()  # 카테고리 전체 검색
-    context = {'post': post, 'categries': categries}
+    post = get_object_or_404(Post, pk=post_id)
+    categories = Category.objects.all()
+    context = {'post': post, 'categories': categories}
     return render(request, 'blog/detail.html', context)
 
-
-# 글쓰기
-
-
+@login_required(login_url='common:login')
 def post_create(request):
-    # 포스트 등록
-    if request.method == 'POST':
-        form = PostForm(request.POST, request.FILES)  # (데이터, 파일)
-        if form.is_valid():  # 유효성 검사에 통과된다면
-            post = form.save(commit=False)  # 아직 보내면 안됨
-            post.pub_date = timezone.now()  # 현재 시간
-            post.author = request.user  # 로그인 한 사람
+    if request.method == "POST":
+        form = PostForm(request.POST, request.FILES)
+        if form.is_valid():
+            post = form.save(commit=False)
+            post.pub_date = timezone.now()
+            post.author = request.user
             post.save()
             return redirect('blog:post_list')
     else:
-        form = PostForm()  # 비어있는 폼
+        form = PostForm()
     context = {'form': form}
     return render(request, 'blog/post_form.html', context)
 
 
-# 카테고리별 페이지
+# 카테고리 페이지
 def category_page(request, slug):
     current_category = Category.objects.get(slug=slug)
-    post_list = Post.objects.filter(category=current_category)
-    post_list = post_list.order_by('-pub_date')
+    post_list = Post.objects.filter(category=current_category)  # 현재 카테고리의 포스트
+    post_list = post_list.order_by('-pub_date')  # 날짜순 내림 차순
+    post_list2 = Post.objects.all()
     categories = Category.objects.all()
     context = {
         'current_category': current_category,
         'post_list': post_list,
-        'categries': categories
+        'categories': categories,
+        'total_post': len(post_list),
+        'post_list2': len(post_list2)
 
     }
     return render(request, 'blog/post_list.html', context)
+
+
+# 포스트 삭제
+@login_required(login_url='common:login')
+def post_delete(request, post_id):
+    post = Post.objects.get(id=post_id)
+    post.delete()
+    return redirect('blog:post_list')

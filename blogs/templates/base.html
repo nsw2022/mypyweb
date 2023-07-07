@@ -1,19 +1,27 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="ko">
 {% load static %}
 <head>
     <meta charset="UTF-8">
-    <title>{% block title %}{% endblock %}</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Welcome~</title>
     <link rel="stylesheet" href="{% static 'blog/css/bootstrap.css' %}">
     <link rel="stylesheet" href="{% static 'blog/css/style.css' %}">
     <script src="{% static 'blog/js/bootstrap.js' %}"></script>
-    <script src="https://kit.fontawesome.com/515785cd79.js" crossorigin="anonymous"></script>
-
+    <!-- juery 라이브러리 -->
+    <script src="https://code.jquery.com/jquery-3.7.0.js" integrity="sha256-JlqSTELeR4TLqP0OG9dxM7yDPqX1ox/HfgiSLBj8+kM=" crossorigin="anonymous"></script>
+    <script src="https://kit.fontawesome.com/187dabceeb.js" crossorigin="anonymous"></script>
 </head>
 <body>
-{% include 'navbar.html' %}
-{% block content %}
-{% endblock %}
+  <!-- 본문 내용 start -->
+    {% include 'navbar.html' %}
+    {% block content %}
+    {% endblock %}
+    <!--본문 내용 end -->
+
+    <!--자바스크립트 start -->
+    {% block script %}
+    {% endblock %}
+    <!--자바스크립트 end -->
 </body>
 </html>
