@@ -22,6 +22,10 @@ class Category(models.Model):
         verbose_name = 'category'
         verbose_name_plural = 'categories'
 
+
+
+
+
 class Post(models.Model):
     author = models.ForeignKey(User, on_delete=models.CASCADE)
     title = models.CharField(max_length=200)
@@ -40,8 +44,15 @@ class Post(models.Model):
 
     def get_file_name(self):
         return os.path.basename(self.file.name)
-
+    # 파일 확장자 구분
     def get_file_ext(self):
         return self.get_file_name().split('.')[-1]
 
-
+    # 댓글 모델
+class Comment(models.Model):
+    author = models.ForeignKey(User, on_delete=models.CASCADE)
+    content = models.TextField()
+    pub_date = models.DateTimeField()
+    modify_date = models.DateTimeField(null=True, blank=True)
+    # 게시글이 부모키(기본키), 댓글이 자식키(외래키)
+    post = models.ForeignKey(Post, null=True, blank=True, on_delete=models.CASCADE)

@@ -20,5 +20,8 @@ aside ul li{margin: 5px 0}
 #paging ul li{display: inline-block; margin: 20px 5px;}
 #paging ul li a{font-size: 1.2rem;}
 #paging ul li a.active{font-weight: bold;}
-
+.comment{
+    border-top:1px dotted #ccc;
+    margin-bptt
+}
 

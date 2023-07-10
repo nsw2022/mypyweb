@@ -3,8 +3,8 @@ from django.core import paginator
 from django.core.paginator import Paginator
 from django.db.models import Q
 from django.shortcuts import render, get_object_or_404, redirect
-from .models import Post, Category
-from .forms import PostForm
+from .models import Post, Category, Comment
+from .forms import PostForm, CommentForm
 from django.utils import timezone
 
 
@@ -92,3 +92,39 @@ def post_delete(request, post_id):
     post = Post.objects.get(id=post_id)
     post.delete()
     return redirect('blog:post_list')
+
+# 댓글 생성
+@login_required(login_url='common:login')
+def comment_create(request, post_id):
+    post = Post.objects.get(id=post_id) # 댓글을 쓰기 위한 포스트 한개를 가져옴
+    if request.method=='POST':
+        form = CommentForm(request.POST) # 입력된 댓글 가져옴
+        if form.is_valid():
+            comment=form.save(commit=False)
+            comment.author = request.user # 로그인한 글쓴이
+            comment.pub_date = timezone.now() # 댓글 작성일과 시간
+            comment.post = post
+            form.save() # 실제저장
+            return redirect('blog:detail', post_id=post_id)
+
+@login_required(login_url='common:login')
+def comment_delete(request, comment_id):
+    comment=Comment.objects.get(id=comment_id) # 아이디가 맞는 댓글하나 가져와서
+    comment.delete() # 지움
+    return redirect('blog:detail', post_id=comment.post_id)
+
+@login_required(login_url='common:login')
+def comment_modify(request, comment_id):
+    comment = Comment.objects.get(id=comment_id)  # 아이디가 맞는 댓글하나 가져와서
+    if request.method == "POST":
+        form = CommentForm(request.POST,instance=comment)
+        if form.is_valid():
+            comment = form.save(commit=False)
+            comment.author = request.user
+            comment.modify_date = timezone.now()
+            comment.save()
+            return redirect('blog:detail',post_id=comment.post_id)
+    else:
+        form = CommentForm(instance=comment)
+    context = {'form':form,'comment':comment}
+    return render(request, 'blog/comment_form.html', context)
